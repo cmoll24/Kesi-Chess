@@ -2,13 +2,16 @@ package com.company;
 
 public class Board {
     int[][] table;
+    Player player1, player2;
 
-    public Board(){
+    public Board(Player player1, Player player2){
         table = new int[8][8];
+        this.player1 = player1; //temp
+        this.player2 = player2; //temp
     }
 
     public void initialize(){
-
+        Piece pawn1 = new Pawn(0,0, player1); //temp
     }
 
     public void print(){

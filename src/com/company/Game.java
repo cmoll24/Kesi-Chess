@@ -19,7 +19,7 @@ public class Game {
 
         player1 = new Player(Color.white);
         player2 = new Player(Color.black);
-        board = new Board();
+        board = new Board(player1, player2);
     }
 
     public void start(){
