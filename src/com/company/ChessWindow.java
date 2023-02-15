@@ -1,31 +1,34 @@
 package com.company;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.net.URL;
+import java.awt.*;
 
 public class ChessWindow extends JPanel {
     Color lightColor, darkColor;
+    Board board;
 
-    public ChessWindow(){
-        lightColor = Color.white;
-        darkColor = Color.black;
-
-        //URL path = getClass().getResource(name);
-        //mImage = ImageIO.read(path);
+    public ChessWindow(Board board){
+        this.board = board;
+        lightColor = new Color(227,193,111);
+        darkColor = new Color(184,139,74);
     }
 
     @Override
     public void paint(Graphics g) {
-        //super.paint(g);
-        for (int file = 0; file < 8; file ++) {
-            for (int rank = 0; rank < 8; rank ++){
+        Piece[][] table = board.getTable();
+
+        for (int file = 0; file < table.length; file ++) {
+            for (int rank = 0; rank < table.length; rank ++){
                 boolean isLightSquare = (file + rank) % 2 == 0;
                 Color color = isLightSquare ? lightColor : darkColor;
                 g.setColor(color);
                 g.fillRect(file*64,rank*64,64,64);
+
+                Piece piece = table[file][rank];
+                if (piece != null) {
+                    Image img = piece.getSprite();
+                    g.drawImage(img,file*64,rank*64,null);
+                }
             }
         }
     }

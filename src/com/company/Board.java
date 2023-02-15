@@ -2,20 +2,21 @@ package com.company;
 
 public class Board {
     Piece[][] table;
-    Player player1, player2;
 
-    public Board(Player player1, Player player2){
+    public Board(){
         table = new Piece[8][8];
-        this.player1 = player1; //temp
-        this.player2 = player2; //temp
+        //this.player1 = player1; //temp
+        //this.player2 = player2; //temp
 
-        initialize();
+        //initialize();
     }
 
-    public void initialize(){
+    public void placePiece(int x,int y,Piece piece){
+        table[x][y] = piece;
+    }
 
-        Piece pawn1 = new Pawn(0,0, player1); //temp
-        table[0][0] = pawn1;
+    public Piece[][] getTable() {
+        return table;
     }
 
     public void print(){
