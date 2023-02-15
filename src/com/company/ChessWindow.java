@@ -1,8 +1,10 @@
 package com.company;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.net.URL;
 
 public class ChessWindow extends JPanel {
     Color lightColor, darkColor;
@@ -10,6 +12,9 @@ public class ChessWindow extends JPanel {
     public ChessWindow(){
         lightColor = Color.white;
         darkColor = Color.black;
+
+        //URL path = getClass().getResource(name);
+        //mImage = ImageIO.read(path);
     }
 
     @Override
