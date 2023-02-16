@@ -22,10 +22,12 @@ public abstract class Piece {
 
     public void loadSprite(String name){
         URL path = this.getClass().getClassLoader().getResource(name);
-        try {
-            sprite = ImageIO.read(path);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (path != null) {
+            try {
+                sprite = ImageIO.read(path).getScaledInstance(64,64, Image.SCALE_DEFAULT);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

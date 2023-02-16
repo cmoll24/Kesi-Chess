@@ -9,6 +9,9 @@ public class Pawn extends Piece {
     public Pawn(int x, int y, Player player, Board board) {
         super(x, y, player, board);
         symbol = 'p';
-        loadSprite("images//64px-Chess_tile_pd.png");
+
+        char color = (player.isLightColored()) ? 'l' : 'd';
+        String name = "images//64px-Chess_tile_p"+color+".png";
+        loadSprite(name);
     }
 }

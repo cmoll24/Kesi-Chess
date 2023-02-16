@@ -3,13 +3,14 @@ package com.company;
 import java.awt.Color;
 
 public class Player {
-    Color color;
+    boolean lightColored;
 
-    public Player(Color color){
-        this.color = color;
+    public Player(boolean lightColored){
+
+        this.lightColored = lightColored;
     }
 
-    public Color getColor() {
-        return color;
+    public boolean isLightColored() {
+        return lightColored;
     }
 }

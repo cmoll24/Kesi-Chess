@@ -11,13 +11,13 @@ public class Game {
     JFrame frame;
 
     public Game(){
-        player1 = new Player(Color.white);
-        player2 = new Player(Color.black);
+        player1 = new Player(true);
+        player2 = new Player(false);
         board = new Board();
 
         frame = new JFrame();
         frame.setBounds(10, 10, 528, 551);
-        JPanel panel = null;
+        JPanel panel;
         panel = new ChessWindow(board);
         frame.add(panel);
         frame.setDefaultCloseOperation(3);
@@ -28,7 +28,7 @@ public class Game {
 
     public void initialize(){
         for (int x = 0; x < 8; x ++) { //temp
-            new Pawn(x,1, player1, board);
+            new Pawn(x,1, player2, board);
         }
     }
 

@@ -9,8 +9,8 @@ public class ChessWindow extends JPanel {
 
     public ChessWindow(Board board){
         this.board = board;
-        lightColor = new Color(227,193,111);
-        darkColor = new Color(184,139,74);
+        lightColor = new Color(240,217,181);
+        darkColor = new Color(181,136,99);
     }
 
     @Override
