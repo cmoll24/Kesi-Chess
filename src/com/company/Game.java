@@ -1,8 +1,6 @@
 package com.company;
 
 import javax.swing.*;
-import java.awt.Color;
-import java.io.IOException;
 
 public class Game {
     int ply; //used for counting the number of moves in the game

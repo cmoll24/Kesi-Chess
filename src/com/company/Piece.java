@@ -1,7 +1,5 @@
 package com.company;
 
-import java.awt.*;
-
 public abstract class Piece {
     int x,y;
     Player player;

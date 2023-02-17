@@ -1,7 +1,5 @@
 package com.company;
 
-import java.awt.Color;
-
 public class Player {
     boolean lightColored;
 
