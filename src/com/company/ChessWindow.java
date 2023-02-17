@@ -6,11 +6,14 @@ import java.awt.*;
 public class ChessWindow extends JPanel {
     Color lightColor, darkColor;
     Board board;
+    SpriteLoader spriteLoader;
 
     public ChessWindow(Board board){
         this.board = board;
         lightColor = new Color(240,217,181);
         darkColor = new Color(181,136,99);
+
+        spriteLoader = new SpriteLoader("images//384px-Chess_Pieces_Sprite.png");
     }
 
     @Override
@@ -26,7 +29,10 @@ public class ChessWindow extends JPanel {
 
                 Piece piece = table[file][rank];
                 if (piece != null) {
-                    Image img = piece.getSprite();
+                    Image img = spriteLoader.getSprite(
+                            piece.getPieceType(),
+                            piece.isLightColored());
+
                     g.drawImage(img,file*64,rank*64,null);
                 }
             }
