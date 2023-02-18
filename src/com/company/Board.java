@@ -14,4 +14,9 @@ public class Board {
     public Piece[][] getTable() {
         return table;
     }
+
+    public void movePiece(int mx, int my, int x,int y){
+        table[x][y] = table[my][my];
+        table[my][my] = null;
+    }
 }

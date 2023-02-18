@@ -20,7 +20,8 @@ public class SpriteLoader {
         int i = 0;
         for (int y = 0; y < 2; y ++) {
             for (int x = 0; x < 6; x ++) {
-                images[i] = all.getSubimage(x*tileSize, y*tileSize, tileSize, tileSize).getScaledInstance(64,64, Image.SCALE_DEFAULT);
+                Image imgTile = all.getSubimage(x*tileSize, y*tileSize, tileSize, tileSize);
+                images[i] = imgTile.getScaledInstance(64,64, Image.SCALE_DEFAULT);
                 i ++;
             }
         }

@@ -34,5 +34,8 @@ public class Game {
         System.out.println("The game begins!");
         new Pawn(5,5,player1, board);
         frame.repaint();
+
+        board.movePiece(1,1,1,3);
+        frame.repaint();
     }
 }

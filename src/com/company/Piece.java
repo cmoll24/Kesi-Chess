@@ -1,17 +1,17 @@
 package com.company;
 
 public abstract class Piece {
-    int x,y;
+    int mx,my;
     Player player;
     Board board;
     Type pieceType;
 
-    public Piece(int file, int rank, Player player, Board board) {
-        this.x = file;
-        this.y = rank;
+    public Piece(int x, int y, Player player, Board board) {
+        mx = x;
+        my = y;
         this.player = player;
         this.board = board;
-        board.placePiece(file,rank,this);
+        board.placePiece(x,y,this);
     }
 
     public Type getPieceType() {
