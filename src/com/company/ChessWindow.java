@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ChessWindow extends JPanel {
-    private final Color lightColor, darkColor;
+    private final Color lightColor, darkColor, selectedColor;
     private final Board board;
     private final SpriteLoader spriteLoader;
     private final SpriteLoader selectedSpriteLoader;
@@ -15,6 +15,7 @@ public class ChessWindow extends JPanel {
         this.board = board;
         lightColor = new Color(240,217,181);
         darkColor = new Color(181,136,99);
+        selectedColor = Color.yellow;
 
         spriteLoader = new SpriteLoader("images/384px-Chess_Pieces_Sprite.png");
         selectedSpriteLoader = new SpriteLoader("images/384px-Chess_Pieces_Sprite_selected.png");
@@ -31,12 +32,20 @@ public class ChessWindow extends JPanel {
 
         for (int file = 0; file < table.length; file ++) {
             for (int rank = 0; rank < table.length; rank ++){
-                boolean isLightSquare = (file + rank) % 2 == 0;
-                Color color = isLightSquare ? lightColor : darkColor;
+                Piece piece = table[file][rank];
+
+                Color color = Color.black;
+
+                if (piece != null && piece == selectedPiece) {
+                    color = selectedColor;
+                } else {
+                    boolean isLightSquare = (file + rank) % 2 == 0;
+                    color = isLightSquare ? lightColor : darkColor;
+                }
+
                 g.setColor(color);
                 g.fillRect(file*64,rank*64,64,64);
 
-                Piece piece = table[file][rank];
                 if (piece != null && piece != selectedPiece) {
                     Image img = spriteLoader.getSprite(
                             piece.getPieceType(),
