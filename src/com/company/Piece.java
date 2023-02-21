@@ -12,6 +12,12 @@ public abstract class Piece {
         this.player = player;
         this.board = board;
         board.placePiece(x,y,this);
+        player.addPiece(this);
+    }
+
+    public void setPosition(int x,int y){
+        mx = x;
+        my = y;
     }
 
     public Type getPieceType() {
@@ -20,5 +26,9 @@ public abstract class Piece {
 
     public boolean isLightColored() {
         return player.isLightColored();
+    }
+
+    public void kill() {
+        board.removePiece(mx,my);
     }
 }

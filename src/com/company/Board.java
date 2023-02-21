@@ -11,12 +11,28 @@ public class Board {
         table[file][rank] = piece;
     }
 
+    public void removePiece(int file,int rank){
+        table[file][rank] = null;
+    }
+
     public Piece[][] getTable() {
         return table;
     }
 
-    public void movePiece(int mx, int my, int x,int y){
-        table[x][y] = table[my][my];
-        table[my][my] = null;
+    public Piece getPiece(int x,int y) {
+        if (x < 8 && y < 8){
+            return table[x][y];
+        } else {
+            return null;
+        }
+    }
+
+    public void movePiece(Piece piece, int x,int y){
+        if (x < 8 && y < 8) {
+            removePiece(x, y);
+            piece.kill();
+            table[x][y] = piece;
+            piece.setPosition(x, y);
+        }
     }
 }

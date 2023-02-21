@@ -7,6 +7,9 @@ public class ChessWindow extends JPanel {
     Color lightColor, darkColor;
     Board board;
     SpriteLoader spriteLoader;
+    SpriteLoader spriteShadowLoader;
+
+    Piece selectedPiece;
 
     public ChessWindow(Board board){
         this.board = board;
@@ -14,6 +17,11 @@ public class ChessWindow extends JPanel {
         darkColor = new Color(181,136,99);
 
         spriteLoader = new SpriteLoader("images//384px-Chess_Pieces_Sprite.png");
+        spriteShadowLoader = new SpriteLoader("images//384px-Chess_Pieces_Sprite_shadows.png");
+    }
+
+    public void setSelectedPiece(Piece selectedPiece) {
+        this.selectedPiece = selectedPiece;
     }
 
     @Override
@@ -28,7 +36,7 @@ public class ChessWindow extends JPanel {
                 g.fillRect(file*64,rank*64,64,64);
 
                 Piece piece = table[file][rank];
-                if (piece != null) {
+                if (piece != null && piece != selectedPiece) {
                     Image img = spriteLoader.getSprite(
                             piece.getPieceType(),
                             piece.isLightColored());
@@ -37,5 +45,18 @@ public class ChessWindow extends JPanel {
                 }
             }
         }
+
+        if (selectedPiece != null) {
+            int x = getMousePosition().getLocation().x;
+            int y = getMousePosition().getLocation().y;
+
+            Image img = spriteShadowLoader.getSprite(
+                    selectedPiece.getPieceType(),
+                    selectedPiece.isLightColored());
+
+            g.drawImage(img, x-32, y-32, null);
+        }
     }
+
+
 }
