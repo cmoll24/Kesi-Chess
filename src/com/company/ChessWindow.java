@@ -10,6 +10,8 @@ public class ChessWindow extends JPanel {
     private final SpriteLoader selectedSpriteLoader;
 
     private Piece selectedPiece;
+    private Point selectedSquare;
+    private boolean pieceDragged;
 
     public ChessWindow(Board board){
         this.board = board;
@@ -19,6 +21,14 @@ public class ChessWindow extends JPanel {
 
         spriteLoader = new SpriteLoader("images/384px-Chess_Pieces_Sprite.png");
         selectedSpriteLoader = new SpriteLoader("images/384px-Chess_Pieces_Sprite_selected.png");
+    }
+
+    public void setSelectedSquare(Point selectedSquare) {
+        this.selectedSquare = selectedSquare;
+    }
+
+    public void setPieceDragged(boolean pieceDragged) {
+        this.pieceDragged = pieceDragged;
     }
 
     public void setSelectedPiece(Piece selectedPiece) {
@@ -32,11 +42,9 @@ public class ChessWindow extends JPanel {
 
         for (int file = 0; file < table.length; file ++) {
             for (int rank = 0; rank < table.length; rank ++){
-                Piece piece = table[file][rank];
+                Color color;
 
-                Color color = Color.black;
-
-                if (piece != null && piece == selectedPiece) {
+                if (selectedSquare != null && selectedSquare.x == file && selectedSquare.y == rank) {
                     color = selectedColor;
                 } else {
                     boolean isLightSquare = (file + rank) % 2 == 0;
@@ -46,7 +54,8 @@ public class ChessWindow extends JPanel {
                 g.setColor(color);
                 g.fillRect(file*64,rank*64,64,64);
 
-                if (piece != null && piece != selectedPiece) {
+                Piece piece = table[file][rank];
+                if (piece != null && (piece != selectedPiece || !pieceDragged)) {
                     Image img = spriteLoader.getSprite(
                             piece.getPieceType(),
                             piece.isLightColored());
@@ -56,7 +65,7 @@ public class ChessWindow extends JPanel {
             }
         }
 
-        if (selectedPiece != null && getMousePosition() != null) {
+        if (pieceDragged && selectedPiece != null && getMousePosition() != null) {
             int x = getMousePosition().x;
             int y = getMousePosition().y;
 

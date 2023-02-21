@@ -1,5 +1,7 @@
 package com.company;
 
+import java.awt.Point;
+
 public abstract class Piece {
     private int x,y;
     private final Player player;
@@ -19,6 +21,10 @@ public abstract class Piece {
     public void setPosition(int x,int y){
         this.x = x;
         this.y = y;
+    }
+
+    public Point getPosition() {
+        return new Point(x,y);
     }
 
     public Player getPlayer() {

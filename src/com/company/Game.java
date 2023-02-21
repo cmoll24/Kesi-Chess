@@ -31,44 +31,44 @@ public class Game {
         window = new ChessWindow(board);
         frame.add(window);
         frame.addMouseListener(new MouseListener() {
+            boolean clickBuffer = false;
+
             @Override
             public void mouseClicked(MouseEvent e) {
-                System.out.println("click");
-                Piece piece = getPiece(e);
-
-                /*if (piece != null && piece.getPlayer() == currentPlayer) { // you click on one of your own pieces
-                    if (selectedPiece == null) { // you have no selected piece
-                        selectedPiece = piece;
-                        window.setSelectedPiece(selectedPiece);
-
-                    } else if (selectedPiece == piece){ // you click on a piece you have already selected
-                        selectedPiece = null;
-                        window.setSelectedPiece(null);
-                    }
-                } else */
+                /*Piece piece = getPiece(e);
                 if (selectedPiece != piece) { // you click on a square to move your piece to
                     movePiece(e);
-                }
+                }*/
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
                 Piece piece = getPiece(e);
 
-                if (piece != null && piece.getPlayer() == currentPlayer) {
+                if (selectedPiece != piece && piece != null && piece.getPlayer() == currentPlayer) {
+                    clickBuffer = true;
                     selectedPiece = piece;
                     window.setSelectedPiece(selectedPiece);
+                    window.setSelectedSquare(piece.getPosition());
+                    window.setPieceDragged(true);
+                    frame.repaint();
                 }
-                frame.repaint();
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                Piece piece = getPiece(e);
+                window.setPieceDragged(false);
 
-                if (selectedPiece != piece) {
+                Piece piece = getPiece(e);
+                if (selectedPiece != piece && (piece == null || piece.getPlayer() != currentPlayer)) {
                     movePiece(e);
+                } else if (selectedPiece == piece && !clickBuffer){
+                    selectedPiece = null;
+                    window.setSelectedPiece(null);
+                    window.setSelectedSquare(null);
                 }
+                clickBuffer = false;
+                frame.repaint();
             }
 
             @Override
@@ -89,7 +89,7 @@ public class Game {
             public void mouseMoved(MouseEvent e) {}
         });
 
-        frame.setDefaultCloseOperation(3);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible(true);
 
         borderOffset = frame.getInsets();
@@ -108,7 +108,7 @@ public class Game {
         if (selectedPiece != null) {
             board.movePiece(
                     selectedPiece,
-                    (e.getX() - borderOffset.top) / 64,
+                    (e.getX() - borderOffset.left) / 64,
                     (e.getY() - borderOffset.top) / 64
             );
             selectedPiece = null;
