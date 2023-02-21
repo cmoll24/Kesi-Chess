@@ -7,16 +7,15 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 public class Game {
-    int ply; //used for counting the number of moves in the game
+    private final Player player1, player2;
+    private final Board board;
+    private final JFrame frame;
+    private final ChessWindow window;
+    private Insets borderOffset;
 
-    Player player1, player2;
-    Board board;
-    JFrame frame;
-    ChessWindow window;
-    Insets borderOffset;
-
-    Piece selectedPiece;
-    Player currentPlayer;
+    private int ply; //used for counting the number of moves in the game
+    private Piece selectedPiece;
+    private Player currentPlayer;
 
     public Game(){
         ply = 0;
@@ -24,6 +23,7 @@ public class Game {
         player1 = new Player(true);
         player2 = new Player(false);
         board = new Board();
+        currentPlayer = player1;
 
         frame = new JFrame();
         frame.setBounds(10, 10, 528, 551);
@@ -41,10 +41,11 @@ public class Game {
                         (e.getY() - borderOffset.top) / 64
                 );
 
-                if (piece != null && piece.player == currentPlayer) {
+                if (piece != null && piece.getPlayer() == currentPlayer) {
                     selectedPiece = piece;
                     window.setSelectedPiece(selectedPiece);
                 }
+                frame.repaint();
             }
 
             @Override
@@ -58,7 +59,8 @@ public class Game {
                     );
                     selectedPiece = null;
                     window.setSelectedPiece(null);
-                    ply ++;
+                    frame.repaint();
+                    switchTurn();
                 }
             }
 
@@ -70,7 +72,7 @@ public class Game {
         });
         frame.addMouseMotionListener(new MouseMotionListener() {
             @Override
-            public void mouseDragged(MouseEvent e) { }
+            public void mouseDragged(MouseEvent e) {frame.repaint();}
 
             @Override
             public void mouseMoved(MouseEvent e) {}
@@ -84,23 +86,21 @@ public class Game {
         initialize();
     }
 
-    public void initialize(){
+    private void initialize(){
         for (int x = 0; x < 8; x ++) { //temp
             new Pawn(x,1, player2, board);
         }
         new Pawn(5, 5, player1, board);
     }
 
-    public void start(){
+    public void test(){
         System.out.println("The game begins!");
-
-        frame.repaint();
         board.movePiece(board.getPiece(1,1), 1, 3);
         frame.repaint();
+    }
 
-        while (true) {
-            currentPlayer =  (ply % 2 == 0) ? player1 : player2;
-            frame.repaint();
-        }
+    private void switchTurn(){
+        ply ++;
+        currentPlayer =  (ply % 2 == 0) ? player1 : player2;
     }
 }

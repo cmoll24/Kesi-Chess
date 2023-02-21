@@ -4,20 +4,20 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ChessWindow extends JPanel {
-    Color lightColor, darkColor;
-    Board board;
-    SpriteLoader spriteLoader;
-    SpriteLoader spriteShadowLoader;
+    private final Color lightColor, darkColor;
+    private final Board board;
+    private final SpriteLoader spriteLoader;
+    private final SpriteLoader selectedSpriteLoader;
 
-    Piece selectedPiece;
+    private Piece selectedPiece;
 
     public ChessWindow(Board board){
         this.board = board;
         lightColor = new Color(240,217,181);
         darkColor = new Color(181,136,99);
 
-        spriteLoader = new SpriteLoader("images//384px-Chess_Pieces_Sprite.png");
-        spriteShadowLoader = new SpriteLoader("images//384px-Chess_Pieces_Sprite_shadows.png");
+        spriteLoader = new SpriteLoader("images/384px-Chess_Pieces_Sprite.png");
+        selectedSpriteLoader = new SpriteLoader("images/384px-Chess_Pieces_Sprite_selected.png");
     }
 
     public void setSelectedPiece(Piece selectedPiece) {
@@ -25,7 +25,8 @@ public class ChessWindow extends JPanel {
     }
 
     @Override
-    public void paint(Graphics g) {
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
         Piece[][] table = board.getTable();
 
         for (int file = 0; file < table.length; file ++) {
@@ -46,11 +47,11 @@ public class ChessWindow extends JPanel {
             }
         }
 
-        if (selectedPiece != null) {
-            int x = getMousePosition().getLocation().x;
-            int y = getMousePosition().getLocation().y;
+        if (selectedPiece != null && getMousePosition() != null) {
+            int x = getMousePosition().x;
+            int y = getMousePosition().y;
 
-            Image img = spriteShadowLoader.getSprite(
+            Image img = selectedSpriteLoader.getSprite(
                     selectedPiece.getPieceType(),
                     selectedPiece.isLightColored());
 

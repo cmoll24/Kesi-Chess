@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.net.URL;
 
 public class SpriteLoader {
-    Image[] images;
+    private final Image[] images;
 
     public SpriteLoader(String pathName){
         URL path = this.getClass().getClassLoader().getResource(pathName);
@@ -29,7 +29,7 @@ public class SpriteLoader {
 
     public Image getSprite(Type type, boolean isLightColored) {
         int colorOffset = (isLightColored) ? 0:6;
-        int index = type.getValue() + colorOffset;
+        int index = type.getIndex() + colorOffset;
         return images[index];
     }
 }

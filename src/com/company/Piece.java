@@ -1,23 +1,28 @@
 package com.company;
 
 public abstract class Piece {
-    int mx,my;
-    Player player;
-    Board board;
-    Type pieceType;
+    private int x,y;
+    private final Player player;
+    private final Board board;
+    private final Type pieceType;
 
-    public Piece(int x, int y, Player player, Board board) {
-        mx = x;
-        my = y;
+    public Piece(int x, int y, Player player, Board board, Type pieceType) {
+        this.x = x;
+        this.y = y;
         this.player = player;
         this.board = board;
+        this.pieceType = pieceType;
         board.placePiece(x,y,this);
         player.addPiece(this);
     }
 
     public void setPosition(int x,int y){
-        mx = x;
-        my = y;
+        this.x = x;
+        this.y = y;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     public Type getPieceType() {
@@ -29,6 +34,6 @@ public abstract class Piece {
     }
 
     public void kill() {
-        board.removePiece(mx,my);
+        board.removePiece(x,y);
     }
 }

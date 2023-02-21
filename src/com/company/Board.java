@@ -1,7 +1,7 @@
 package com.company;
 
 public class Board {
-    Piece[][] table;
+    private final Piece[][] table;
 
     public Board(){
         table = new Piece[8][8];
@@ -29,7 +29,7 @@ public class Board {
 
     public void movePiece(Piece piece, int x,int y){
         if (x < 8 && y < 8) {
-            removePiece(x, y);
+            removePiece(x,y);
             piece.kill();
             table[x][y] = piece;
             piece.setPosition(x, y);

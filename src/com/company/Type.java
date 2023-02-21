@@ -8,12 +8,12 @@ public enum Type {
     ROOK(4),
     PAWN(5);
 
-    private final int value;
-    Type(int value) {
-        this.value = value;
+    private final int index;
+    Type(int index) {
+        this.index = index;
     }
 
-    public int getValue(){
-        return value;
+    public int getIndex(){
+        return index;
     }
 }
