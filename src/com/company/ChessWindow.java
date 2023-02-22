@@ -1,5 +1,7 @@
 package com.company;
 
+import com.company.pieces.Piece;
+
 import javax.swing.*;
 import java.awt.*;
 

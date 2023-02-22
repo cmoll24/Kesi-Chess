@@ -1,4 +1,7 @@
-package com.company;
+package com.company.pieces;
+
+import com.company.Board;
+import com.company.Player;
 
 import java.awt.Point;
 

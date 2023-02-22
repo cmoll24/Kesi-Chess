@@ -1,4 +1,4 @@
-package com.company;
+package com.company.pieces;
 
 public enum Type {
     KING(0),

@@ -1,10 +1,13 @@
 package com.company;
 
+import com.company.pieces.*;
+
 import javax.swing.*;
 import java.awt.Insets;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 
 public class Game {
     private final Player player1, player2;
@@ -34,12 +37,7 @@ public class Game {
             boolean clickBuffer = false;
 
             @Override
-            public void mouseClicked(MouseEvent e) {
-                /*Piece piece = getPiece(e);
-                if (selectedPiece != piece) { // you click on a square to move your piece to
-                    movePiece(e);
-                }*/
-            }
+            public void mouseClicked(MouseEvent e) {}
 
             @Override
             public void mousePressed(MouseEvent e) {
@@ -119,15 +117,36 @@ public class Game {
     }
 
     private void initialize(){
-        for (int x = 0; x < 8; x ++) { //temp
-            new Pawn(x,1, player2, board);
+        String setup = "RNBQKBNRpppppppp";
+
+        for (int y = 0; y < 2; y ++){
+            for (int x = 0; x < 8; x ++) {
+                char c = setup.charAt(y*8+x);
+                createPiece(c,x,y,player2);
+            }
         }
-        new Pawn(5, 5, player1, board);
+        for (int y = 0; y < 2; y ++){
+            for (int x = 0; x < 8; x ++) {
+                char c = setup.charAt(y*8+x);
+                createPiece(c,x,7-y,player1);
+            }
+        }
+    }
+
+    private void createPiece(char c, int x, int y, Player player){
+        switch (c) {
+            case 'K' -> new King(x, y, player, board);
+            case 'Q' -> new Queen(x, y, player, board);
+            case 'B' -> new Bishop(x, y, player, board);
+            case 'N' -> new Knight(x, y, player, board);
+            case 'R' -> new Rook(x, y, player, board);
+            case 'p' -> new Pawn(x, y, player, board);
+        }
     }
 
     public void test(){
         System.out.println("The game begins!");
-        board.movePiece(board.getPiece(1,1), 1, 3);
+        //board.movePiece(board.getPiece(1,1), 1, 3);
         frame.repaint();
     }
 

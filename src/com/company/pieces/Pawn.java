@@ -1,4 +1,7 @@
-package com.company;
+package com.company.pieces;
+
+import com.company.Board;
+import com.company.Player;
 
 public class Pawn extends Piece {
     public Pawn(int x, int y, Player player, Board board) {

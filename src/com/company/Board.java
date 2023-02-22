@@ -1,5 +1,7 @@
 package com.company;
 
+import com.company.pieces.Piece;
+
 public class Board {
     private final Piece[][] table;
 

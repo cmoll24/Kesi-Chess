@@ -1,5 +1,7 @@
 package com.company;
 
+import com.company.pieces.Type;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
