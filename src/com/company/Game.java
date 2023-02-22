@@ -3,6 +3,7 @@ package com.company;
 import com.company.pieces.*;
 
 import javax.swing.*;
+import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -28,13 +29,18 @@ public class Game {
         board = new Board();
         currentPlayer = player1;
 
+        int fWidth = 528;
+        int fHeight= 551;
+
         frame = new JFrame();
-        frame.setBounds(10, 10, 528, 551);
+        frame.setTitle("Kesi Chess");
+        frame.setBounds(10, 10, fWidth, fHeight);
+        frame.setMinimumSize(new Dimension(fWidth,fHeight));
 
         window = new ChessWindow(board);
         frame.add(window);
         frame.addMouseListener(new MouseListener() {
-            boolean clickBuffer = false;
+            boolean clickBuffer = false; //buffer so you cannot unselect a piece on the same click you select it
 
             @Override
             public void mouseClicked(MouseEvent e) {}
@@ -43,13 +49,15 @@ public class Game {
             public void mousePressed(MouseEvent e) {
                 Piece piece = getPiece(e);
 
-                if (selectedPiece != piece && piece != null && piece.getPlayer() == currentPlayer) {
-                    clickBuffer = true;
-                    selectedPiece = piece;
-                    window.setSelectedPiece(selectedPiece);
-                    window.setSelectedSquare(piece.getPosition());
-                    window.setPieceDragged(true);
-                    frame.repaint();
+                if (piece != null) {
+                    if (selectedPiece == null || piece.getPlayer() == selectedPiece.getPlayer()) { //== currentPlayer
+                        clickBuffer = selectedPiece != piece;
+                        selectedPiece = piece;
+                        window.setSelectedPiece(selectedPiece);
+                        window.setSelectedSquare(piece.getPosition());
+                        window.setPieceDragged(true);
+                        frame.repaint();
+                    }
                 }
             }
 
@@ -58,12 +66,14 @@ public class Game {
                 window.setPieceDragged(false);
 
                 Piece piece = getPiece(e);
-                if (selectedPiece != piece && (piece == null || piece.getPlayer() != currentPlayer)) {
-                    movePiece(e);
-                } else if (selectedPiece == piece && !clickBuffer){
-                    selectedPiece = null;
-                    window.setSelectedPiece(null);
-                    window.setSelectedSquare(null);
+                if (selectedPiece != null) {
+                    if (selectedPiece != piece && (piece == null || piece.getPlayer() != selectedPiece.getPlayer())) {
+                        movePiece(e);
+                    } else if (selectedPiece == piece && !clickBuffer) {
+                        selectedPiece = null;
+                        window.setSelectedPiece(null);
+                        window.setSelectedSquare(null);
+                    }
                 }
                 clickBuffer = false;
                 frame.repaint();
@@ -112,7 +122,7 @@ public class Game {
             selectedPiece = null;
             window.setSelectedPiece(null);
             frame.repaint();
-            switchTurn();
+            //switchTurn();
         }
     }
 
@@ -152,6 +162,6 @@ public class Game {
 
     private void switchTurn(){
         ply ++;
-        currentPlayer =  (ply % 2 == 0) ? player1 : player2;
+        currentPlayer = (ply % 2 == 0) ? player1 : player2;
     }
 }
