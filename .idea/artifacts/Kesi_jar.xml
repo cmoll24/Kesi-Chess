@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Kesi:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Kesi_jar</output-path>
+    <root id="archive" name="Kesi.jar">
+      <element id="module-output" name="Kesi" />
+    </root>
+  </artifact>
+</component>

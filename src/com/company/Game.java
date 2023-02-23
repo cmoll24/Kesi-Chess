@@ -3,19 +3,17 @@ package com.company;
 import com.company.pieces.*;
 
 import javax.swing.*;
-import java.awt.Dimension;
-import java.awt.Insets;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.util.ArrayList;
 
 public class Game {
     private final Player player1, player2;
     private final Board board;
     private final JFrame frame;
     private final ChessWindow window;
-    private Insets borderOffset;
+    private final Insets borderOffset;
 
     private int ply; //used for counting the number of moves in the game
     private Piece selectedPiece;
@@ -143,21 +141,27 @@ public class Game {
         }
     }
 
-    private void createPiece(char c, int x, int y, Player player){
+    private void createPiece(char c, int x, int y, Player player) {
         switch (c) {
-            case 'K' -> new King(x, y, player, board);
-            case 'Q' -> new Queen(x, y, player, board);
-            case 'B' -> new Bishop(x, y, player, board);
-            case 'N' -> new Knight(x, y, player, board);
-            case 'R' -> new Rook(x, y, player, board);
-            case 'p' -> new Pawn(x, y, player, board);
+            case 'K':
+                new King(x, y, player, board);
+                break;
+            case 'Q':
+                new Queen(x, y, player, board);
+                break;
+            case 'B':
+                new Bishop(x, y, player, board);
+                break;
+            case 'N':
+                new Knight(x, y, player, board);
+                break;
+            case 'R':
+                new Rook(x, y, player, board);
+                break;
+            case 'p':
+                new Pawn(x, y, player, board);
+                break;
         }
-    }
-
-    public void test(){
-        System.out.println("The game begins!");
-        //board.movePiece(board.getPiece(1,1), 1, 3);
-        frame.repaint();
     }
 
     private void switchTurn(){
