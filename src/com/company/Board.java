@@ -32,6 +32,11 @@ public class Board {
     public void movePiece(Piece piece, int x,int y){
         if (x < 8 && y < 8) {
             //System.out.println("moving from " + piece.getPosition().x + ' ' + piece.getPosition().y + " to " + x + ' ' + y);
+            if (table[x][y] != null) {
+                Player player = piece.getPlayer();
+                player.addCapturedPiece(table[x][y]);
+            }
+
             removePiece(x,y);
             piece.kill();
             table[x][y] = piece;

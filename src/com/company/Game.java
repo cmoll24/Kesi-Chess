@@ -27,7 +27,7 @@ public class Game {
         board = new Board();
         currentPlayer = player1;
 
-        int fWidth = 528;
+        int fWidth = 528+64;//528;
         int fHeight= 551;
 
         frame = new JFrame();
@@ -35,7 +35,7 @@ public class Game {
         frame.setBounds(10, 10, fWidth, fHeight);
         frame.setMinimumSize(new Dimension(fWidth,fHeight));
 
-        window = new ChessWindow(board);
+        window = new ChessWindow(fWidth, fHeight, board, player1, player2);
         frame.add(window);
         frame.addMouseListener(new MouseListener() {
             boolean clickBuffer = false; //buffer so you cannot unselect a piece on the same click you select it

@@ -4,6 +4,7 @@ import com.company.pieces.Piece;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class ChessWindow extends JPanel {
     private final Color lightColor, darkColor, selectedColor;
@@ -15,8 +16,17 @@ public class ChessWindow extends JPanel {
     private Point selectedSquare;
     private boolean pieceDragged;
 
-    public ChessWindow(Board board){
+    private final Player player1, player2; //temp
+    private final int fWidth;
+    private final int fHeight;
+
+    public ChessWindow(int fWidth, int fHeight, Board board, Player player1, Player player2){
+        this.fWidth = fWidth;
+        this.fHeight = fHeight;
         this.board = board;
+        this.player1 = player1;
+        this.player2 = player2;
+
         lightColor = new Color(240,217,181);
         darkColor = new Color(181,136,99);
         selectedColor = Color.yellow;
@@ -42,6 +52,7 @@ public class ChessWindow extends JPanel {
         super.paintComponent(g);
         Piece[][] table = board.getTable();
 
+        // ------- DRAWING THE TABLE --------
         for (int file = 0; file < table.length; file ++) {
             for (int rank = 0; rank < table.length; rank ++){
                 Color color;
@@ -60,13 +71,18 @@ public class ChessWindow extends JPanel {
                 if (piece != null && (piece != selectedPiece || !pieceDragged)) {
                     Image img = spriteLoader.getSprite(
                             piece.getPieceType(),
-                            piece.isLightColored());
-
+                            piece.isLightColored()
+                    );
                     g.drawImage(img,file*64,rank*64,null);
                 }
             }
         }
 
+        //------- DRAWING THE CAPTURED PIECES -------- //TEMP REDO WITH CONSTANTS & RESIZABLILITY
+        drawCapturedPieces(g, player1, false);
+        drawCapturedPieces(g, player2, true);
+
+        // ------- DRAWING THE SELECTED PIECE --------
         if (pieceDragged && selectedPiece != null && getMousePosition() != null) {
             int x = getMousePosition().x;
             int y = getMousePosition().y;
@@ -79,5 +95,23 @@ public class ChessWindow extends JPanel {
         }
     }
 
+    private void drawCapturedPieces(Graphics g, Player player, boolean isOpponent){
+        ArrayList<Piece> capturedPieces = player.getCapturedPieces();
+
+        int heightOffset = (isOpponent) ? 0 : fHeight-72;
+        int coef = (isOpponent) ? 1 : -1;
+
+        for (int i = 0; i < capturedPieces.size(); i++){
+            Piece piece = capturedPieces.get(i);
+            Image img = spriteLoader.getSprite(
+                    piece.getPieceType(),
+                    piece.isLightColored()
+            );
+            img = img.getScaledInstance(32,32,Image.SCALE_DEFAULT);
+
+            int widthOffset = (i>=8) ? -32 : 0;
+            g.drawImage(img,fWidth-48+widthOffset,heightOffset+((i%8)*32*coef),null);
+        }
+    }
 
 }
