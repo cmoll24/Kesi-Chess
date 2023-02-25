@@ -33,16 +33,16 @@ public class Player {
     }
 
     public void undoCapture(Board board) {
-        ArrayList<Piece> newCapturedPieces = new ArrayList<>(); //changing it directly messes with the loop
+        int size = capturedPieces.size();
 
-        for (Piece capturedPiece : capturedPieces) {
+        for (int i = 0; i < size; i++) {
+            Piece capturedPiece = capturedPieces.get(i);
             Piece piece = board.getPiece(capturedPiece.getPosition());
 
-            if (piece != capturedPiece) {
-                newCapturedPieces.add(capturedPiece);
+            if (piece == capturedPiece) {
+                capturedPieces.remove(capturedPiece);
             }
         }
-        capturedPieces = newCapturedPieces;
     }
 
     public boolean isLightColored() {
