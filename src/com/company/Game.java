@@ -97,7 +97,7 @@ public class Game {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                System.out.println(KeyEvent.getKeyText(e.getKeyCode()) + " " + e.getKeyCode());
+                //System.out.println(KeyEvent.getKeyText(e.getKeyCode()) + " " + e.getKeyCode());
 
                 switch (e.getKeyCode()) {
                     case 37: //left arrow

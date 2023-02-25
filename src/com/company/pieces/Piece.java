@@ -6,10 +6,10 @@ import com.company.Player;
 import java.awt.Point;
 
 public abstract class Piece {
-    private int x,y;
-    private final Player player;
-    private final Board board;
-    private final Type pieceType;
+    int x,y;
+    final Player player;
+    final Board board;
+    Type pieceType;
 
     public Piece(int x, int y, Player player, Board board, Type pieceType) {
         this.x = x;
