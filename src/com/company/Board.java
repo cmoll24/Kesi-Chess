@@ -40,11 +40,7 @@ public class Board {
     public Piece getPiece(Point point) {
         int x = point.x;
         int y = point.y;
-        if (x < 8 && y < 8){
-            return table[x][y];
-        } else {
-            return null;
-        }
+        return getPiece(x,y);
     }
 
     public void movePiece(Piece piece, int x,int y){
