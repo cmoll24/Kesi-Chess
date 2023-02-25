@@ -4,9 +4,7 @@ import com.company.pieces.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 
 public class Game {
     private final Player player1, player2;
@@ -47,15 +45,13 @@ public class Game {
             public void mousePressed(MouseEvent e) {
                 Piece piece = getPiece(e);
 
-                if (piece != null) {
-                    if (selectedPiece == null || piece.getPlayer() == selectedPiece.getPlayer()) { //== currentPlayer
-                        clickBuffer = selectedPiece != piece;
-                        selectedPiece = piece;
-                        window.setSelectedPiece(selectedPiece);
-                        window.setSelectedSquare(piece.getPosition());
-                        window.setPieceDragged(true);
-                        frame.repaint();
-                    }
+                if (piece != null && piece.getPlayer() == currentPlayer) {
+                    clickBuffer = selectedPiece != piece;
+                    selectedPiece = piece;
+                    window.setSelectedPiece(selectedPiece);
+                    window.setSelectedSquare(piece.getPosition());
+                    window.setPieceDragged(true);
+                    frame.repaint();
                 }
             }
 
@@ -95,6 +91,29 @@ public class Game {
             public void mouseMoved(MouseEvent e) {}
         });
 
+        frame.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {}
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                System.out.println(KeyEvent.getKeyText(e.getKeyCode()) + " " + e.getKeyCode());
+
+                switch (e.getKeyCode()) {
+                    case 37: //left arrow
+                        undoMove();
+                        break;
+
+                    case 32: //space bar
+                        switchTurn();
+                        break;
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {}
+        });
+
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible(true);
 
@@ -124,6 +143,19 @@ public class Game {
         }
     }
 
+    private void undoMove(){
+        if (board.hasHistory()) {
+            if (selectedPiece == null) {window.setSelectedSquare(null);}
+            board.revertBoard();
+            player1.undoCapture(board);
+            player2.undoCapture(board);
+            ply--;
+            currentPlayer = (ply % 2 == 0) ? player1 : player2;
+            window.setLightTurn(ply % 2 == 0);
+            frame.repaint();
+        }
+    }
+
     private void initialize(){
         String setup = "RNBQKBNRpppppppp";
 
@@ -139,6 +171,7 @@ public class Game {
                 createPiece(c,x,7-y,player1);
             }
         }
+        board.recordBoard();
     }
 
     private void createPiece(char c, int x, int y, Player player) {
@@ -167,5 +200,8 @@ public class Game {
     private void switchTurn(){
         ply ++;
         currentPlayer = (ply % 2 == 0) ? player1 : player2;
+        board.recordBoard();
+        window.setLightTurn(ply % 2 == 0);
+        frame.repaint();
     }
 }

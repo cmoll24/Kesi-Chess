@@ -1,6 +1,7 @@
 package com.company;
 
 import com.company.pieces.Piece;
+import com.company.pieces.Type;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,6 +16,7 @@ public class ChessWindow extends JPanel {
     private Piece selectedPiece;
     private Point selectedSquare;
     private boolean pieceDragged;
+    private boolean isLightTurn;
 
     private final Player player1, player2; //temp
     private final int fWidth;
@@ -30,6 +32,7 @@ public class ChessWindow extends JPanel {
         lightColor = new Color(240,217,181);
         darkColor = new Color(181,136,99);
         selectedColor = Color.yellow;
+        isLightTurn = true;
 
         spriteLoader = new SpriteLoader("images/384px-Chess_Pieces_Sprite.png");
         selectedSpriteLoader = new SpriteLoader("images/384px-Chess_Pieces_Sprite_selected.png");
@@ -45,6 +48,10 @@ public class ChessWindow extends JPanel {
 
     public void setSelectedPiece(Piece selectedPiece) {
         this.selectedPiece = selectedPiece;
+    }
+
+    public void setLightTurn(boolean lightTurn) {
+        isLightTurn = lightTurn;
     }
 
     @Override
@@ -78,16 +85,21 @@ public class ChessWindow extends JPanel {
             }
         }
 
-        //------- DRAWING THE CAPTURED PIECES -------- //TEMP REDO WITH CONSTANTS & RESIZABLILITY
+        //------- DRAWING THE CAPTURED PIECES --------
         drawCapturedPieces(g, player1, false);
         drawCapturedPieces(g, player2, true);
+
+        //------- TURN COLOR MARKER --------
+        Image img = spriteLoader.getSprite(Type.PAWN,isLightTurn);
+        img = img.getScaledInstance(32,32,Image.SCALE_DEFAULT);
+        g.drawImage(img,fWidth-64,fHeight/2-32,null);
 
         // ------- DRAWING THE SELECTED PIECE --------
         if (pieceDragged && selectedPiece != null && getMousePosition() != null) {
             int x = getMousePosition().x;
             int y = getMousePosition().y;
 
-            Image img = selectedSpriteLoader.getSprite(
+            img = selectedSpriteLoader.getSprite(
                     selectedPiece.getPieceType(),
                     selectedPiece.isLightColored());
 

@@ -32,6 +32,17 @@ public class Player {
         return capturedPieces;
     }
 
+    public void undoCapture(Board board) {
+        for (int i = 0; i < capturedPieces.size(); i++) {
+            Piece capturedPiece = capturedPieces.get(i);
+            Piece piece = board.getPiece(capturedPiece.getPosition());
+
+            if (piece == capturedPiece) {
+                capturedPieces.remove(capturedPiece);
+            }
+        }
+    }
+
     public boolean isLightColored() {
         return lightColored;
     }
