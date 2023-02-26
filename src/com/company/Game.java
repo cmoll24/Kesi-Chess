@@ -18,6 +18,7 @@ public class Game {
     private Piece selectedPiece;
     private Player currentPlayer;
     private final ArrayList<GameState> gameHistory;
+    private String moveName; //used for storing the move name
 
     public Game(){
         ply = 0;
@@ -26,6 +27,7 @@ public class Game {
         player2 = new Player(false);
         board = new Board();
         gameHistory = new ArrayList<>();
+        moveName = new String();
 
         currentPlayer = player1;
 
@@ -115,6 +117,10 @@ public class Game {
                     case 32: //space bar
                         switchTurn();
                         break;
+
+                    case 80: //letter p
+                        printPGN();
+                        break;
                 }
             }
 
@@ -139,11 +145,11 @@ public class Game {
 
     private void movePiece(MouseEvent e) {
         if (selectedPiece != null) {
-            board.movePiece(
-                    selectedPiece,
-                    (e.getX() - borderOffset.left) / 64,
-                    (e.getY() - borderOffset.top) / 64
-            );
+            int x = (e.getX() - borderOffset.left) / 64;
+            int y = (e.getY() - borderOffset.top) / 64;
+            setMoveName(selectedPiece.getPosition(),x,y);
+            board.movePiece(selectedPiece,x,y);
+
             selectedPiece = null;
             window.setSelectedPiece(null);
             frame.repaint();
@@ -192,12 +198,26 @@ public class Game {
         }
     }
 
+    private void setMoveName(Point pos, int x, int y){
+        if (moveName.equals("")){
+            char mCharX = (char) (pos.getX() + 97);
+            char charX = (char) (x + 97);
+            int my = (int) pos.getY();
+            my = 8 - my;
+            y = 8 - y;
+
+            String str = mCharX + "" + my + "" + charX + "" + y;
+            moveName = str;
+        }
+    }
+
     private void saveGameState(){
         if (ply < gameHistory.size()) { //if there is already a save with this ply remove it
             gameHistory.subList(ply, gameHistory.size()).clear();
         }
 
         gameHistory.add(new GameState(
+                moveName,
                 ply,
                 board.getTable(),
                 player1.getCapturedPieces(),
@@ -217,28 +237,38 @@ public class Game {
     private void switchTurn(){
         ply ++;
         saveGameState();
-        currentPlayer = (ply % 2 == 0) ? player1 : player2;
-        window.setLightTurn(ply % 2 == 0);
-        frame.repaint();
+        resetCurrentMove();
     }
 
     private void redoMove(){
         if (ply < gameHistory.size() - 1) {
-            if (selectedPiece == null) {window.setSelectedSquare(null);}
             loadGameState(ply + 1);
-            currentPlayer = (ply % 2 == 0) ? player1 : player2;
-            window.setLightTurn(ply % 2 == 0);
-            frame.repaint();
+            if (selectedPiece == null) {window.setSelectedSquare(null);}
+            resetCurrentMove();
         }
     }
 
     private void undoMove(){
         if (ply > 0) {
-            if (selectedPiece == null) {window.setSelectedSquare(null);}
             loadGameState(ply - 1);
-            currentPlayer = (ply % 2 == 0) ? player1 : player2;
-            window.setLightTurn(ply % 2 == 0);
-            frame.repaint();
+            if (selectedPiece == null) {window.setSelectedSquare(null);}
+            resetCurrentMove();
+        }
+    }
+
+    private void resetCurrentMove(){
+        moveName = "";
+        currentPlayer = (ply % 2 == 0) ? player1 : player2;
+        window.setLightTurn(ply % 2 == 0);
+        frame.repaint();
+    }
+
+    private void printPGN(){ //rudimentary PGN position
+        //cannot do promotion or en-passant but can do castling if king is moved first
+        System.out.println("PGN:");
+        for (GameState gameState : gameHistory) {
+            String moveName = gameState.getMoveName();
+            System.out.println(moveName);
         }
     }
 }

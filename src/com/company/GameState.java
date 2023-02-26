@@ -5,16 +5,22 @@ import com.company.pieces.Piece;
 import java.util.ArrayList;
 
 public class GameState {
+    private final String moveName;
     private final int ply;
     private final Piece[][] table;
     private final ArrayList<Piece> capturedPieces1;
     private final ArrayList<Piece> capturedPieces2;
 
-    public GameState(int ply, Piece[][] table, ArrayList<Piece> capturedPieces1, ArrayList<Piece> capturesPieces2){
+    public GameState(String moveName, int ply, Piece[][] table, ArrayList<Piece> capturedPieces1, ArrayList<Piece> capturesPieces2){
+        this.moveName = moveName;
         this.ply = ply;
         this.table = cloneTable(table);
         this.capturedPieces1 = (ArrayList<Piece>) capturedPieces1.clone();
         this.capturedPieces2 = (ArrayList<Piece>) capturesPieces2.clone();
+    }
+
+    public String getMoveName() {
+        return moveName;
     }
 
     public int getPly() {
