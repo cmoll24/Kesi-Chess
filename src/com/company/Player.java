@@ -28,11 +28,15 @@ public class Player {
         capturedPieces.add(piece);
     }
 
+    public void setCapturedPieces(ArrayList<Piece> capturedPieces) {
+        this.capturedPieces = capturedPieces;
+    }
+
     public ArrayList<Piece> getCapturedPieces() {
         return capturedPieces;
     }
 
-    public void undoCapture(Board board) {
+    /*public void undoCapture(Board board) {
         ArrayList<Piece> newCapturedPieces = new ArrayList<>();
 
         for (Piece capturedPiece : capturedPieces) {
@@ -43,7 +47,7 @@ public class Player {
             }
         }
         capturedPieces = newCapturedPieces;
-    }
+    }*/
 
     public boolean isLightColored() {
         return lightColored;

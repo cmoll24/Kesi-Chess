@@ -2,16 +2,11 @@ package com.company;
 
 import com.company.pieces.Piece;
 
-import java.awt.Point;
-import java.util.ArrayList;
-
 public class Board {
     private Piece[][] table;
-    private final ArrayList<Piece[][]> boardHistory;
 
     public Board(){
         table = new Piece[8][8];
-        boardHistory = new ArrayList<>();
     }
 
     public void placePiece(int file,int rank,Piece piece){
@@ -26,21 +21,12 @@ public class Board {
         return table;
     }
 
-    public boolean hasHistory() {
-        return (boardHistory.size() > 1);
-    }
-
     public Piece getPiece(int x,int y) {
         if (x < 8 && y < 8){
             return table[x][y];
         } else {
             return null;
         }
-    }
-    public Piece getPiece(Point point) {
-        int x = point.x;
-        int y = point.y;
-        return getPiece(x,y);
     }
 
     public void movePiece(Piece piece, int x,int y){
@@ -59,16 +45,8 @@ public class Board {
         }
     }
 
-    public void recordBoard(){
-        boardHistory.add(cloneTable(table));
-    }
-
-    public void revertBoard(){
-        if (boardHistory.size() <= 1) {return;}
-
-        int index = boardHistory.size() - 1; //current position
-        table = cloneTable(boardHistory.get(index - 1)); //revert to before current position
-        boardHistory.remove(index); //remove current position
+    public void revertBoard(Piece[][] newTable){
+        table = newTable;
 
         for (int file = 0; file < table.length; file ++) {
             for (int rank = 0; rank < table.length; rank ++) {
@@ -78,13 +56,6 @@ public class Board {
                 }
             }
         }
-    }
-
-    private Piece[][] cloneTable(Piece[][] table) {
-        Piece [][] newTable = new Piece[table.length][];
-        for(int i = 0; i < table.length; i++)
-            newTable[i] = table[i].clone();
-        return newTable;
     }
 
     private void printTable(Piece[][] table) { //debug method

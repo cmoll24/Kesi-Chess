@@ -5,6 +5,7 @@ import com.company.pieces.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class Game {
     private final Player player1, player2;
@@ -16,6 +17,7 @@ public class Game {
     private int ply; //used for counting the number of moves in the game
     private Piece selectedPiece;
     private Player currentPlayer;
+    private final ArrayList<GameState> gameHistory;
 
     public Game(){
         ply = 0;
@@ -23,6 +25,8 @@ public class Game {
         player1 = new Player(true);
         player2 = new Player(false);
         board = new Board();
+        gameHistory = new ArrayList<>();
+
         currentPlayer = player1;
 
         int fWidth = 528+64;//528;
@@ -104,6 +108,10 @@ public class Game {
                         undoMove();
                         break;
 
+                    case 39: //right arrow
+                        redoMove();
+                        break;
+
                     case 32: //space bar
                         switchTurn();
                         break;
@@ -143,19 +151,6 @@ public class Game {
         }
     }
 
-    private void undoMove(){
-        if (board.hasHistory()) {
-            if (selectedPiece == null) {window.setSelectedSquare(null);}
-            board.revertBoard();
-            player1.undoCapture(board);
-            player2.undoCapture(board);
-            ply--;
-            currentPlayer = (ply % 2 == 0) ? player1 : player2;
-            window.setLightTurn(ply % 2 == 0);
-            frame.repaint();
-        }
-    }
-
     private void initialize(){
         String setup = "RNBQKBNRpppppppp";
 
@@ -171,7 +166,7 @@ public class Game {
                 createPiece(c,x,7-y,player1);
             }
         }
-        board.recordBoard();
+        saveGameState();
     }
 
     private void createPiece(char c, int x, int y, Player player) {
@@ -197,11 +192,53 @@ public class Game {
         }
     }
 
+    private void saveGameState(){
+        if (ply < gameHistory.size()) { //if there is already a save with this ply remove it
+            gameHistory.subList(ply, gameHistory.size()).clear();
+        }
+
+        gameHistory.add(new GameState(
+                ply,
+                board.getTable(),
+                player1.getCapturedPieces(),
+                player2.getCapturedPieces()
+        ));
+    }
+
+    private void loadGameState(int index){
+        GameState gameState = gameHistory.get(index);
+
+        ply = gameState.getPly();
+        board.revertBoard(gameState.getTable());
+        player1.setCapturedPieces(gameState.getCapturedPieces1());
+        player2.setCapturedPieces(gameState.getCapturedPieces2());
+    }
+
     private void switchTurn(){
         ply ++;
+        saveGameState();
         currentPlayer = (ply % 2 == 0) ? player1 : player2;
-        board.recordBoard();
         window.setLightTurn(ply % 2 == 0);
         frame.repaint();
+    }
+
+    private void redoMove(){
+        if (ply < gameHistory.size() - 1) {
+            if (selectedPiece == null) {window.setSelectedSquare(null);}
+            loadGameState(ply + 1);
+            currentPlayer = (ply % 2 == 0) ? player1 : player2;
+            window.setLightTurn(ply % 2 == 0);
+            frame.repaint();
+        }
+    }
+
+    private void undoMove(){
+        if (ply > 0) {
+            if (selectedPiece == null) {window.setSelectedSquare(null);}
+            loadGameState(ply - 1);
+            currentPlayer = (ply % 2 == 0) ? player1 : player2;
+            window.setLightTurn(ply % 2 == 0);
+            frame.repaint();
+        }
     }
 }
