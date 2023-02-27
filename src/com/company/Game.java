@@ -268,7 +268,7 @@ public class Game {
         System.out.println("PGN:");
         for (GameState gameState : gameHistory) {
             String moveName = gameState.getMoveName();
-            System.out.println(moveName);
+            System.out.print(moveName + " ");
         }
     }
 }
